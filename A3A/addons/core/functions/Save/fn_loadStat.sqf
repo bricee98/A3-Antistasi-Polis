@@ -79,7 +79,11 @@ if (_varName in _specialVarLoads) then {
         aggressionStackInvaders = +(_varValue select 1);
         [true] spawn A3A_fnc_calculateAggression;
     };
-    if (_varName == 'hr') then {server setVariable ["HR",_varValue,true]};
+    if (_varName == 'hr') then {
+        server setVariable ["HR",_varValue,true];
+        private _economy = [teamPlayer] call A3A_fnc_getEconomyForSide;
+        [teamPlayer, _varValue, _economy#1, createHashMapFromArray [["mode", "set"]]] call A3A_fnc_updateEconomyForSide;
+    };
     if (_varName == 'dateX') then {setDate _varValue};
     if (_varName == 'weather') then {
         // Avoid persisting potentially-broken fog values
@@ -88,7 +92,11 @@ if (_varName in _specialVarLoads) then {
         0 setRain (_varValue select 1);
         forceWeatherChange
     };
-    if (_varName == 'resourcesFIA') then {server setVariable ["resourcesFIA",_varValue,true]};
+    if (_varName == 'resourcesFIA') then {
+        server setVariable ["resourcesFIA",_varValue,true];
+        private _economy = [teamPlayer] call A3A_fnc_getEconomyForSide;
+        [teamPlayer, _economy#0, _varValue, createHashMapFromArray [["mode", "set"]]] call A3A_fnc_updateEconomyForSide;
+    };
     if (_varName == 'destroyedSites') then {destroyedSites = +_varValue; publicVariable "destroyedSites"};
     if (_varName == 'skillFIA') then {
         skillFIA = _varValue; publicVariable "skillFIA";

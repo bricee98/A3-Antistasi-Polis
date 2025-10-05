@@ -34,6 +34,8 @@ colorTeamPlayer = "colorGUER";
 respawnTeamPlayer = "respawn_guerrila";			// not really sure why we have two markers here (also "Synd_HQ")
 posHQ = getMarkerPos respawnTeamPlayer;
 
+call A3A_fnc_initCommandStructures;
+
 ////////////////////////////////////////
 //     DECLARING PATCOM VARIABLES    ///
 ////////////////////////////////////////
