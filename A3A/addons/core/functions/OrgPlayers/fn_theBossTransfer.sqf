@@ -16,9 +16,10 @@ if (!isNull theBoss) then
 
 theBoss = _newBoss;
 publicVariable "theBoss";
+[teamPlayer, _newBoss] call A3A_fnc_setCommanderForSide;
 
 if (isNull _newBoss) exitWith {
-	[_silent] spawn {
+        [_silent] spawn {
 		params ["_silent"];
 		sleep 5;
 		private _textX = format [localize "STR_A3A_fn_orgp_tBTransfer_noEligible"];

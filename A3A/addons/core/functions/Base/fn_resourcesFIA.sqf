@@ -24,6 +24,7 @@ if (_resourcesFIAT < 0) then {_resourcesFIAT = 0};
 
 server setVariable ["hr",_hrT,true];
 server setVariable ["resourcesFIA",_resourcesFIAT,true];
+[teamPlayer, _hr, _resourcesFIA] call A3A_fnc_updateEconomyForSide;
 resourcesIsChanging = false;
 
 if (_silent) exitWith {};

@@ -223,6 +223,18 @@ class CfgFunctions
             class setNestedObject {};
         };
 
+        class Command {
+            file = QPATHTOFOLDER(functions\Command);
+            class createCommandStructure {};
+            class getCommandStructureForSide {};
+            class getCommanderForSide {};
+            class getEconomyForSide {};
+            class initCommandStructures {};
+            class setCommanderForSide {};
+            class sideToKey {};
+            class updateEconomyForSide {};
+        };
+
         class CREATE {
             file = QPATHTOFOLDER(functions\CREATE);
             class AAFroadPatrol {};
