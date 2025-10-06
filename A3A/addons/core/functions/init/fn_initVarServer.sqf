@@ -62,6 +62,18 @@ private _rebelEconomy = _rebelStructure getOrDefault ["economy", createHashMapFr
 _rebelEconomy set ["resources", initialFactionMoney];
 _rebelEconomy set ["hr", initialHr];
 _rebelStructure set ["economy", _rebelEconomy];
+_rebelStructure set ["respawnMarker", "respawnTeamPlayer"];
+_rebelStructure set ["hqMarker", "Synd_HQ"];
+_rebelStructure set ["hqGarrison", "Synd_HQ"];
+_rebelStructure set ["hqPosition", getMarkerPos "Synd_HQ"];
+_rebelStructure set ["hqObjects", createHashMapFromArray [
+    ["camp", fireX],
+    ["crate", boxX],
+    ["map", mapX],
+    ["vehicleCrate", vehicleBox],
+    ["flag", flagX],
+    ["advisor", petros]
+]];
 _commandStructures set [[teamPlayer] call A3A_fnc_sideToKey, _rebelStructure];
 DECLARE_SERVER_VAR(A3A_commandStructures, _commandStructures);
 DECLARE_SERVER_VAR(A3A_civilWarMode, false);
