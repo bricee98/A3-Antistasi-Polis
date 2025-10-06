@@ -21,7 +21,16 @@ if (_sideKey isEqualTo "") then {
 private _structure = createHashMap;
 _structure set ["sideKey", _sideKey];
 _structure set ["side", _sideInput];
+_structure set ["commanderLabel", _sideKey];
 _structure set ["commander", objNull];
+_structure set ["commanderHcGroups", []];
+_structure set ["commanderSyncObjects", []];
+_structure set ["commanderNotificationTarget", objNull];
+_structure set ["commanderNotificationChannel", "hint"];
+_structure set ["commanderNotificationTitle", ""];
+_structure set ["commanderStatisticsTargets", [teamPlayer, civilian]];
+_structure set ["commanderEligibilityVar", "eligible"];
+_structure set ["hqObjects", []];
 _structure set ["hqObjects", createHashMap];
 _structure set ["hqPosition", [0,0,0]];
 _structure set ["hqMarker", ""];

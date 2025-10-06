@@ -13,15 +13,16 @@ if (side _unit == sideLogic || {_uid == ""}) exitWith {
 // find original player unit in case of remote control
 private _realUnit = _unit getVariable ["owner", _unit];
 
-Debug_3("Player unit %1, original unit %2, boss %3", _unit, _realUnit, theBoss);
+private _currentCommander = [teamPlayer] call A3A_fnc_getCommanderForSide;
+Debug_3("Player unit %1, original unit %2, boss %3", _unit, _realUnit, _currentCommander);
 
-if (_realUnit == theBoss) then
+if (_realUnit == _currentCommander) then
 {
-	if (A3A_petrosMoving) then { call A3A_fnc_buildHQ };
+        if (A3A_petrosMoving) then { call A3A_fnc_buildHQ };
 
-	// Remove our real unit from boss
-	_realUnit setVariable ["eligible", false, true];
-	[] call A3A_fnc_assignBossIfNone;
+        // Remove our real unit from boss
+        _realUnit setVariable ["eligible", false, true];
+        [false, teamPlayer] call A3A_fnc_assignBossIfNone;
 };
 
 //Need to check the group's side, as player may be a civ. Unknown is in case they've been moved out of their group.

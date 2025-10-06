@@ -27,4 +27,9 @@ private _currentCommander = _structure getOrDefault ["commander", objNull];
 if (_currentCommander isEqualTo _commander) exitWith { true };
 
 _structure set ["commander", _commander];
+private _registeredSide = _structure getOrDefault ["side", _sideInput];
+if (_registeredSide isEqualTo teamPlayer) then {
+    theBoss = _commander;
+    if (isServer) then { publicVariable "theBoss"; };
+};
 [_sideInput, _structure, _propagate] call A3A_fnc_setCommandStructureForSide

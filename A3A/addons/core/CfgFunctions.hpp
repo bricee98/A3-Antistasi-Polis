@@ -222,6 +222,7 @@ class CfgFunctions
             class getCommandStructureForSide {};
             class getCommanderForSide {};
             class getEconomyForSide {};
+            class registerCommanderActions {};
             class setCommandStructureForSide {};
             class setCommanderForSide {};
             class sideToKey {};

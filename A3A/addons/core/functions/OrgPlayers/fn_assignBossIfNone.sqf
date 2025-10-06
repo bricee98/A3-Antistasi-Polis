@@ -2,24 +2,25 @@
 FIX_LINE_NUMBERS()
 
 if !(isServer) exitWith { Error("Attempted to call server function as non-server") };
-params [["_memberForced", false]];
+params [["_memberForced", false], ["_sideInput", teamPlayer]];
 
 if (!isNil "A3A_electionInProgress") exitWith {};
 A3A_electionInProgress = true;
 
 
 // Don't run if a Boss exists and is still eligible & active
+private _currentCommander = [_sideInput] call A3A_fnc_getCommanderForSide;
 private _electionReason = call {
-    if (isNull theBoss) exitWith { "there is no boss" };
-    if (_memberForced && !([theBoss] call A3A_fnc_isMember)) exitWith { "the boss is a guest" };
-    if !(theBoss getVariable ["eligible", true]) exitWith { "the boss is not eligible" };
-    if (theBoss getVariable ["isAFK", false]) exitWith { "the boss is AFK" };
+    if (isNull _currentCommander) exitWith { "there is no boss" };
+    if (_memberForced && !([_currentCommander] call A3A_fnc_isMember)) exitWith { "the boss is a guest" };
+    if !(_currentCommander getVariable ["eligible", true]) exitWith { "the boss is not eligible" };
+    if (_currentCommander getVariable ["isAFK", false]) exitWith { "the boss is AFK" };
 };
 if (isNil "_electionReason") exitWith {
-    Debug_1("Not attempting to assign new boss - player %1 is the boss", name theBoss);
+    Debug_1("Not attempting to assign new boss - player %1 is the boss", name _currentCommander);
     A3A_electionInProgress = nil;
 };
-Info_2("Election triggered because %1. Previous boss was %2", _electionReason, name theBoss);
+Info_2("Election triggered because %1. Previous boss was %2", _electionReason, name _currentCommander);
 
 
 // Note: allPlayers doesn't work for a while after server startup, so this function isn't used for picking the initial commander
@@ -45,13 +46,13 @@ private _bossRank = 0;
 if (!isNull _nextBoss) then
 {
     Info_1("Player chosen for Boss: %1", name _nextBoss);
-    if (theBoss != _nextBoss) then { [_nextBoss] call A3A_fnc_theBossTransfer };
+    if (_currentCommander != _nextBoss) then { [_sideInput, _nextBoss] call A3A_fnc_theBossTransfer };
 }
 else
 {
     Info("Couldn't select a new boss - no eligible candidates.");
     // Remove current boss if any, as they're ineligible
-    if (!isNull theBoss) then { [] call A3A_fnc_theBossTransfer };
+    if (!isNull _currentCommander) then { [_sideInput, objNull] call A3A_fnc_theBossTransfer };
 };
 
 A3A_electionInProgress = nil;

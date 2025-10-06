@@ -7,3 +7,24 @@
         <Polish>Wojna domowa (NATO vs CSAT)</Polish>
         <Chinesesimp>内战 (北约 vs CSAT)</Chinesesimp>
       </Key>
+      <Key ID="STR_A3A_commander_action_claim">
+        <Original>Claim %1 Command</Original>
+      </Key>
+      <Key ID="STR_A3A_commander_action_claim_generic">
+        <Original>Claim Command</Original>
+      </Key>
+      <Key ID="STR_A3A_commander_action_abdicate">
+        <Original>Abdicate %1 Command</Original>
+      </Key>
+      <Key ID="STR_A3A_commander_action_abdicate_generic">
+        <Original>Abdicate Command</Original>
+      </Key>
+      <Key ID="STR_A3A_commander_action_wrong_side">
+        <Original>Only %1 forces may interact with this HQ.</Original>
+      </Key>
+      <Key ID="STR_A3A_commander_action_wrong_side_generic">
+        <Original>Only authorised forces may interact with this HQ.</Original>
+      </Key>
+      <Key ID="STR_A3A_commander_action_not_commander">
+        <Original>Only the current commander may abdicate.</Original>
+      </Key>

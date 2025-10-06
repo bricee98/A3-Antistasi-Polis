@@ -72,10 +72,11 @@ if (side group player == teamPlayer) then
 	//if (!A3A_hasACEMedical) then {[_newUnit] call A3A_fnc_initRevive};
 	disableUserInput false;
 	//_newUnit enableSimulation true;
-	if (_oldUnit == theBoss) then
-		{
-		[_newUnit, true] remoteExec ["A3A_fnc_theBossTransfer", 2];
-		};
+        private _currentCommander = [teamPlayer] call A3A_fnc_getCommanderForSide;
+        if (_oldUnit == _currentCommander) then
+                {
+                [teamPlayer, _newUnit, true] remoteExec ["A3A_fnc_theBossTransfer", 2];
+                };
 	//Give them a map, in case they're commander and need to replace petros.
 	_newUnit setUnitLoadout [[],[],[],[selectRandom ((A3A_faction_civ get "uniforms") + (A3A_faction_reb get "uniforms")), []],[],[],[],"",[],
 	[(selectRandom unlockedmaps),"","",(selectRandom unlockedCompasses),(selectRandom unlockedwatches),""]];

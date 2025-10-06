@@ -81,11 +81,11 @@ while {true} do
         _x set [4, 0.5 max _r min 1.0];
     } forEach A3A_supportMarkerTypes;
 */
-	if (isMultiplayer) then
-	{
-		[] spawn A3A_fnc_promotePlayer;
-		[] call A3A_fnc_assignBossIfNone;
-	};
+        if (isMultiplayer) then
+        {
+                [] spawn A3A_fnc_promotePlayer;
+                [false, teamPlayer] call A3A_fnc_assignBossIfNone;
+        };
 
 	// Clear out plank objects that haven't been constructed and have exceeded the timeout
 	call A3A_fnc_processBuildingTimeouts;
