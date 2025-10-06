@@ -22,9 +22,12 @@ private _structure = createHashMap;
 _structure set ["sideKey", _sideKey];
 _structure set ["side", _sideInput];
 _structure set ["commander", objNull];
-_structure set ["hqObjects", []];
+_structure set ["hqObjects", createHashMap];
 _structure set ["hqPosition", [0,0,0]];
 _structure set ["hqMarker", ""];
+_structure set ["respawnMarker", ""];
+_structure set ["hqGarrison", ""];
+_structure set ["hqMoving", false];
 _structure set ["economy", createHashMapFromArray [
     ["resources", 0],
     ["hr", 0],
