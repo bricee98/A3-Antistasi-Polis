@@ -128,7 +128,7 @@ waitUntil {sleep 1; (dateToNumber date > _dateLimitNum) or (!alive _truckX) or (
 if ((_truckX distance _posbase < 50) and (dateToNumber date < _dateLimitNum)) then
 	{
 	[_taskId, "LOG", "SUCCEEDED"] call A3A_fnc_taskSetState;
-	[0,5000*_bonus] remoteExec ["A3A_fnc_resourcesFIA",2];
+        [teamPlayer, 0, 5000*_bonus] remoteExec ["A3A_fnc_resourcesFIA",2];
     Debug("aggroEvent | Rebels won a bank mission");
 	[Occupants, 10, 120] remoteExec ["A3A_fnc_addAggression",2];
 	[400*_bonus, Occupants] remoteExec ["A3A_fnc_timingCA",2];

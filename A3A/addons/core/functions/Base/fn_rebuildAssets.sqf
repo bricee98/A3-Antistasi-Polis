@@ -5,7 +5,8 @@ params [["_siteX", "", [""]]];
 
 private _titleStr = localize "STR_A3A_fn_base_rebasset_title";
 
-private _resourcesFIA = server getVariable "resourcesFIA";
+private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+private _resourcesFIA = _economy getOrDefault ["resources", 0];
 if (_resourcesFIA < 5000) exitWith {[_titleStr, localize "STR_A3A_fn_base_rebasset_no_money"] call A3A_fnc_customHint;};
 
 private _shouldGetLocation = (_siteX isEqualTo "");  // If no location given, default behavior. New UI provides location.
@@ -38,14 +39,14 @@ if (_siteX in _destroyedSites) exitWith {
     [Invaders, 10, 30] remoteExec ["A3A_fnc_addAggression",2];
     destroyedSites = destroyedSites - [_siteX];
     publicVariable "destroyedSites";
-    [0,-5000] remoteExec ["A3A_fnc_resourcesFIA",2];
+    [teamPlayer, 0, -5000] remoteExec ["A3A_fnc_resourcesFIA",2];
 };
 
 private _radioTowers = antennasDead select {_x inArea _siteX};
 if (_radioTowers isNotEqualTo []) exitWith {
     [_titleStr, localize "STR_A3A_fn_base_rebasset_done_2"] call A3A_fnc_customHint;
     [_radioTowers#0] remoteExec ["A3A_fnc_rebuildRadioTower", 2];
-    [0,-5000] remoteExec ["A3A_fnc_resourcesFIA",2];
+    [teamPlayer, 0, -5000] remoteExec ["A3A_fnc_resourcesFIA",2];
 };
 
 [_titleStr, localize "STR_A3A_fn_base_rebasset_no_nothing"] call A3A_fnc_customHint;

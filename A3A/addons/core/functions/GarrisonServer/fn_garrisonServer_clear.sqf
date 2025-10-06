@@ -83,7 +83,7 @@ if (_hqMove) then {
 
 private _safe = !(_marker call A3A_fnc_enemyNearCheck);
 if (_safe) then {
-    [_hr, _costs] spawn A3A_fnc_resourcesFIA;        // TODO: should turn this thing into unscheduled
+    [teamPlayer, _hr, _costs] spawn A3A_fnc_resourcesFIA;        // TODO: should turn this thing into unscheduled
 };
 
 if (_marker in A3A_garrisonMachine) then {

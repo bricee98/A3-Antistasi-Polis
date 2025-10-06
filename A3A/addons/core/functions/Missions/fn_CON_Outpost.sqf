@@ -65,14 +65,14 @@ else
 	[_taskId, "CON", "SUCCEEDED"] call A3A_fnc_taskSetState;
 	if (_difficultX) then
 		{
-		[0,400] remoteExec ["A3A_fnc_resourcesFIA",2];
+             [teamPlayer, 0, 400] remoteExec ["A3A_fnc_resourcesFIA",2];
 		[800, _markerSide] remoteExec ["A3A_fnc_timingCA",2];
 		{if (isPlayer _x) then {[20,_x] call A3A_fnc_playerScoreAdd}} forEach ([500,0,_positionX,teamPlayer] call A3A_fnc_distanceUnits);
 		[20,theBoss] call A3A_fnc_playerScoreAdd;
 		}
 	else
 		{
-		[0,200] remoteExec ["A3A_fnc_resourcesFIA",2];
+             [teamPlayer, 0, 200] remoteExec ["A3A_fnc_resourcesFIA",2];
 		[400, _markerSide] remoteExec ["A3A_fnc_timingCA",2];
 		{if (isPlayer _x) then {[10,_x] call A3A_fnc_playerScoreAdd}} forEach ([500,0,_positionX,teamPlayer] call A3A_fnc_distanceUnits);
 		[10,theBoss] call A3A_fnc_playerScoreAdd;

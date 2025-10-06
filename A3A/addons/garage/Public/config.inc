@@ -149,7 +149,7 @@ HR_GRG_disableSellButton = false;
 
 HR_GRG_addResources = {
     params ["_money"];
-    [0,_money] call A3A_fnc_resourcesFIA;
+    [teamPlayer, 0, _money] call A3A_fnc_resourcesFIA;
 };
 
 HR_GRG_canSell = {_this isEqualTo theBoss};

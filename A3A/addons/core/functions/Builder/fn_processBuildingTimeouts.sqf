@@ -18,7 +18,7 @@ isNil {
 
         // refund? Arguable
         private _price = _object getVariable ["A3A_build_price", 0];
-        if (_price >= 0) then { [0, _price] spawn A3A_fnc_resourcesFIA; };
+        if (_price >= 0) then { [teamPlayer, 0, _price] spawn A3A_fnc_resourcesFIA; };
 
         // remove the object from the list
         A3A_unbuiltObjects deleteAt _forEachIndex;

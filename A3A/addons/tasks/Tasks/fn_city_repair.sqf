@@ -165,7 +165,7 @@ _task set ["s_success", {
 	[5, theBoss] call A3A_fnc_playerScoreAdd;
 
 	[8, _this get "_marker"] remoteExecCall ["A3A_fnc_citySupportChange", 2];
-	[0, 100] spawn A3A_fnc_resourcesFIA;
+    [teamPlayer, 0, 100] spawn A3A_fnc_resourcesFIA;
 
 	[_this get "_taskId", "SUCCEEDED"] call BIS_fnc_taskSetState;
 	_this set ["state", "s_cleanup"]; false;

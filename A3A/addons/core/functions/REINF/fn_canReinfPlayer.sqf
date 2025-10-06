@@ -15,11 +15,12 @@ if ((count units group player) + (count units stragglers) > 9) exitWith {localiz
 private _hasWeapons = [_typeUnit] call A3A_fnc_hasWeapons;
 if !(_hasWeapons) exitWith {localize "STR_A3A_fn_reinf_reinfPlayer_no_weapons"};
 
-private _hr = server getVariable "hr";
+private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+private _hr = _economy getOrDefault ["hr", 0];
 if (_hr < 1) exitWith {localize "STR_A3A_fn_reinf_reinfPlayer_no_hr"};
 
 private _costs = server getVariable _typeUnit;
-private _resources = if (player == theBoss) then { server getVariable "resourcesFIA" } else { player getVariable "moneyX" };
+private _resources = _economy getOrDefault ["resources", 0];
 if (_costs > _resources) exitWith {format [localize "STR_A3A_fn_reinf_reinfPlayer_no_money",_costs]};
 
 "";

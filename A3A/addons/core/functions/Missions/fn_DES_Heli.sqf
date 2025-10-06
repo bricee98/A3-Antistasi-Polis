@@ -388,7 +388,7 @@ if ((not alive _heli) || (_heli distance (getMarkerPos respawnTeamPlayer) < 100)
         Debug_1("%1 was captured", _heli);
     };
     [_taskId, "DES", "SUCCEEDED"] call A3A_fnc_taskSetState;
-    [0,300*_bonus] remoteExec ["A3A_fnc_resourcesFIA",2];
+    [teamPlayer, 0, 300*_bonus] remoteExec ["A3A_fnc_resourcesFIA",2];
     [600*_bonus, _sideX] remoteExec ["A3A_fnc_timingCA",2];
     {if (_x distance _heli < 500) then {[10*_bonus,_x] call A3A_fnc_playerScoreAdd}} forEach (allPlayers - (entities "HeadlessClient_F"));
     [10*_bonus,theBoss] call A3A_fnc_playerScoreAdd;

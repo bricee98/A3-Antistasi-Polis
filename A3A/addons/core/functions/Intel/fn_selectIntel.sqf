@@ -211,7 +211,7 @@ if (_intelType == "Large") then
         {
             private _money = ((round (random 50)) + (10 * tierWar)) * 100;
             _text = format [localize "STR_A3A_fn_intel_select_mon_1", _money];
-            [0, _money] remoteExec ["A3A_fnc_resourcesFIA",2];
+            [teamPlayer, 0, _money] remoteExec ["A3A_fnc_resourcesFIA",2];
         };
     };
 };

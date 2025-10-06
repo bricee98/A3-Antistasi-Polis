@@ -122,7 +122,7 @@ switch _special do {
     };
 };
 
-[- _costHR, - _cost] remoteExec ["A3A_fnc_resourcesFIA", 2];
+[teamPlayer, - _costHR, - _cost] remoteExec ["A3A_fnc_resourcesFIA", 2];
 
 if !(_bypassAI) then {_group spawn A3A_fnc_attackDrillAI};
 

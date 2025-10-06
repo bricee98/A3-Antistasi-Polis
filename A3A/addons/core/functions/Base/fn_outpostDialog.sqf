@@ -55,14 +55,15 @@ else
 	};
 //if ((_typeX == "delete") and (_positionTel distance _pos >10)) exitWith {hint "No post nearby"};
 
-_resourcesFIA = server getVariable "resourcesFIA";
-_hrFIA = server getVariable "hr";
+private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+_resourcesFIA = _economy getOrDefault ["resources", 0];
+_hrFIA = _economy getOrDefault ["hr", 0];
 
 if (((_resourcesFIA < _costs) or (_hrFIA < _hr)) and (_typeX!= "delete")) exitWith {[_titleStr, format [localize "STR_A3A_fn_base_outpdiag_no_resources",_hr,_costs]] call A3A_fnc_customHint;};
 
 if (_typeX != "delete") then
 	{
-	[-_hr,-_costs] remoteExec ["A3A_fnc_resourcesFIA",2];
+        [teamPlayer, -_hr, -_costs] remoteExec ["A3A_fnc_resourcesFIA",2];
 	};
 
  [_typeX,_positionTel] remoteExec ["A3A_fnc_createOutpostsFIA", 2];

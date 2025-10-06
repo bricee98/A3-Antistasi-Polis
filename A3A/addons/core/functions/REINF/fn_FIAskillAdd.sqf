@@ -6,15 +6,15 @@ if (player != theBoss) exitWith {[_titleStr, localize "STR_A3A_fn_reinf_FIASkAdd
 
 if (skillFIA >= 20) exitWith {[_titleStr, localize "STR_A3A_fn_reinf_FIASkAdd_training_max"] call A3A_fnc_customHint;};
 if (skillFIA >= (tierWar*2)) exitWith {[_titleStr, localize "STR_A3A_fn_reinf_FIASkAdd_no_wl"] call A3A_fnc_customHint;};
-_resourcesFIA = server getVariable "resourcesFIA";
+private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+_resourcesFIA = _economy getOrDefault ["resources", 0];
 _costs = 1000 + (1.5*(skillFIA *750));
 if (_resourcesFIA < _costs) exitWith {[_titleStr, format [localize "STR_A3A_fn_reinf_FIASkAdd_no_money",_costs]] call A3A_fnc_customHint;};
 
-_resourcesFIA = _resourcesFIA - _costs;
+[teamPlayer, 0, -_costs] remoteExec ["A3A_fnc_resourcesFIA",2];
 skillFIA = skillFIA + 1;
 [_titleStr, format [localize "STR_A3A_fn_reinf_FIASkAdd_upgraded",skillFIA,FactionGet(reb,"name")]] call A3A_fnc_customHint;
 publicVariable "skillFIA";
-server setVariable ["resourcesFIA",_resourcesFIA,true];
 
 //update tooltip
 _display = findDisplay 100;

@@ -27,12 +27,13 @@ if (sidesX getVariable [_marker, sideUnknown] != teamPlayer) exitWith {
 	[_titleStr, format [localize "STR_A3A_fn_reinf_garrDia_zone_belong",FactionGet(reb,"name")]] remoteExecCall ["A3A_fnc_customHint", _client];
 };
 
-private _hr = server getVariable "hr";
+private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+private _hr = _economy getOrDefault ["hr", 0];
 if (_hr < 1) exitWith {
-	[_titleStr, localize "STR_A3A_garrison_error_no_hr"] remoteExecCall ["A3A_fnc_customHint", _client];
+        [_titleStr, localize "STR_A3A_garrison_error_no_hr"] remoteExecCall ["A3A_fnc_customHint", _client];
 };
 
-private _resourcesFIA = server getVariable "resourcesFIA";
+private _resourcesFIA = _economy getOrDefault ["resources", 0];
 private _costs = server getVariable _unitType;
 if (_costs > _resourcesFIA) exitWith {
 	[_titleStr,  format [localize "STR_A3A_garrison_error_no_money", _costs]] remoteExecCall ["A3A_fnc_customHint", _client];
@@ -50,7 +51,7 @@ if (_limit != -1 && {count _troops >= _limit}) exitWith {
 };
 
 // ugh
-[-1,-_costs] spawn A3A_fnc_resourcesFIA;
+[teamPlayer, -1, -_costs] spawn A3A_fnc_resourcesFIA;
 
 // Add unit to server garrison data
 _troops pushBack _unitType;

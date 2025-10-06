@@ -28,8 +28,9 @@ private _costHR = 0;
 private _formatX = [];
 private _format = "Squd-";
 
-private _hr = server getVariable "hr";
-private _resourcesFIA = server getVariable "resourcesFIA";
+private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+private _hr = _economy getOrDefault ["hr", 0];
+private _resourcesFIA = _economy getOrDefault ["resources", 0];
 
 if (_typeGroup isEqualType []) then {
     _formatX = _typeGroup;
@@ -109,7 +110,7 @@ private _vehiclePlacementMethod = if (getMarkerPos respawnTeamPlayer distance pl
 if (!_isInfantry) exitWith { [_vehType, _fnc_placed, _fnc_placeCheck, [_formatX, _idFormat, _special], _mounts] call _vehiclePlacementMethod };
 
 private _vehCost = [_vehType] call A3A_fnc_vehiclePrice;
-if (_isInfantry and (_costs + _vehCost) > server getVariable "resourcesFIA") exitWith {
+if (_isInfantry and (_costs + _vehCost) > _resourcesFIA) exitWith {
     [_titleStr, format [localize "STR_A3A_fn_reinf_addSqdHC_no_money2",_vehCost]] call A3A_fnc_customHint;
     [_formatX, _idFormat, _special, objNull] spawn A3A_fnc_spawnHCGroup;
 };

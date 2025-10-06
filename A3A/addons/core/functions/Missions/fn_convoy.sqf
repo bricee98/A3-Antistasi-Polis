@@ -354,7 +354,7 @@ if (_convoyType == "Ammunition") then
     else
     {
         [true, false, 400*_bonus, 10*_bonus, 10, 120, "ammo"] call _fnc_applyResults;
-        [0,300*_bonus] remoteExec ["A3A_fnc_resourcesFIA",2];
+        [teamPlayer, 0, 300*_bonus] remoteExec ["A3A_fnc_resourcesFIA",2];
     };
 };
 
@@ -393,7 +393,7 @@ if (_convoyType == "Prisoners") then
             _countX = {(alive _x) and (_x distance _posHQ < 150)} count _POWs;
             [true, false, 400*_bonus, _bonus*_countX/2, 10, 120, "prisoner"] call _fnc_applyResults;
 
-            [_countX,_countX*300*_bonus] remoteExec ["A3A_fnc_resourcesFIA",2];
+            [teamPlayer, _countX, _countX*300*_bonus] remoteExec ["A3A_fnc_resourcesFIA",2];
         };
     };
 };
@@ -444,7 +444,7 @@ if (_convoyType == "Money") then
         if (_vehObj distance _posHQ < 50) then
         {
             [true, false, 400*_bonus, 10*_bonus, 10, 120, "money"] call _fnc_applyResults;
-            [0,5000*_bonus] remoteExec ["A3A_fnc_resourcesFIA",2];
+            [teamPlayer, 0, 5000*_bonus] remoteExec ["A3A_fnc_resourcesFIA",2];
         };
     };
 };
