@@ -9,7 +9,7 @@ _positionTel = _this select 1;
 _quantity = _this select 2;
 private _typeExp = FactionGet(reb,"unitExp");
 _costs = 2*(server getVariable _typeExp) + ([(FactionGet(reb,"vehiclesTruck")) # 0] call A3A_fnc_vehiclePrice);
-[-2,(-1*_costs)] remoteExec ["A3A_fnc_resourcesFIA",2];
+[teamPlayer, -2, -_costs] remoteExec ["A3A_fnc_resourcesFIA",2];
 
 if (_typeX == "ATMine") then
 	{
@@ -124,7 +124,7 @@ if ((_truckX distance _positionTel < 50) and ({alive _x} count units _groupX > 0
 		[_taskId, "Mines", "SUCCEEDED"] call A3A_fnc_taskSetState;
 		sleep 15;
 		[_taskId, "Mines", 0] spawn A3A_fnc_taskDelete;
-		[2,_costs] remoteExec ["A3A_fnc_resourcesFIA",2];
+                [teamPlayer, 2, _costs] remoteExec ["A3A_fnc_resourcesFIA",2];
 		}
 	else
 		{

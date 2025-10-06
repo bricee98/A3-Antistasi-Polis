@@ -95,8 +95,9 @@ switch (_mode) do
         _aaMissilePriceText ctrlSetText ((str _aaMissilePrice) + "€");
 
         // Disable buttons and darken icon if not enough money or HR for the unit
-        private _money = if (player == theBoss) then { server getVariable "resourcesFIA" } else { player getVariable "moneyX" };
-        private _hr = server getVariable "hr";
+        private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+        private _money = _economy getOrDefault ["resources", 0];
+        private _hr = _economy getOrDefault ["hr", 0];
         if (_money < _militiamanPrice || _hr < 1) then {
             _militiamanButton ctrlEnable false;
             _militiamanButton ctrlSetTooltip localize "STR_antistasi_dialogs_recruit_units_error";

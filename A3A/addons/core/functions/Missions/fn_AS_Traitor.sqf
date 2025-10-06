@@ -163,7 +163,7 @@ if (!([_traitor] call A3A_fnc_canFight) || traitorIntel) then
 	if(_difficultX) then {_factor = 2;};
     Debug("aggroEvent | Rebels won a traitor mission");
 	[Occupants, 15 * _factor, 120] remoteExec ["A3A_fnc_addAggression",2];
-	[0,300 * _factor] remoteExec ["A3A_fnc_resourcesFIA",2];
+        [teamPlayer, 0, 300 * _factor] remoteExec ["A3A_fnc_resourcesFIA",2];
 	{
 		if (!isPlayer _x) then
 		{
@@ -184,9 +184,10 @@ else
 	if (_difficultX) then {[-10,theBoss] call A3A_fnc_playerScoreAdd} else {[-10,theBoss] call A3A_fnc_playerScoreAdd};
 	if (dateToNumber date > _dateLimitNum) then
 	{
-		_hrT = server getVariable "hr";
-		_resourcesFIAT = server getVariable "resourcesFIA";
-		[-1*(round(_hrT/3)),-1*(round(_resourcesFIAT/3))] remoteExec ["A3A_fnc_resourcesFIA",2];
+                private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+                _hrT = _economy getOrDefault ["hr", 0];
+                _resourcesFIAT = _economy getOrDefault ["resources", 0];
+                [teamPlayer, -1*(round(_hrT/3)), -1*(round(_resourcesFIAT/3))] remoteExec ["A3A_fnc_resourcesFIA",2];
 	}
 	else
 	{

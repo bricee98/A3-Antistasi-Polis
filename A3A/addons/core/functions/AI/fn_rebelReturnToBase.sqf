@@ -59,8 +59,9 @@ ServerDebug_1("Group %1 escaping to rebel territory", _group);
     sleep 120;          // give them a couple of minutes to run
 
     // Some slightly generous refunding. Probably shouldn't bother
-    private _refundHR = 0;
-    private _refundCash = 0;
+private _refundHR = 0;
+private _refundCash = 0;
+private _side = side _group;
     {
         if (!alive _x) then { continue };
         if (_x getVariable ["incapacitated", false]) then { _x setDamage 1; continue };
@@ -72,5 +73,5 @@ ServerDebug_1("Group %1 escaping to rebel territory", _group);
     } forEach units _group;
 
     deleteGroup _group;
-    [_refundHR, _refundCash] remoteExec ["A3A_fnc_resourcesFIA", 2];
+    [_side, _refundHR, _refundCash] remoteExec ["A3A_fnc_resourcesFIA", 2];
 };

@@ -116,7 +116,8 @@ private _textX = "";
 if ((build_type == "SB") or (build_type == "CB")) then
 	{
 	if (build_type == "SB") then {_playerDir = _playerDir + 180};
-	_resourcesFIA = if (!isMultiPlayer) then {server getVariable "resourcesFIA"} else {player getVariable "moneyX"};
+        private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+        _resourcesFIA = _economy getOrDefault ["resources", 0];
 	if (build_cost > _resourcesFIA) then
 		{
 		_leave = true;

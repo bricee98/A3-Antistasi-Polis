@@ -71,8 +71,9 @@ private _sideToStr = createHashMapFromArray [[teamPlayer,0], [Occupants,1],	[Inv
 
 private ["_hrBackground","_resourcesBackground","_veh","_typeVehX","_weaponsX","_ammunition","_items","_backpcks","_containers","_arrayEst","_posVeh","_dierVeh","_prestigeOPFOR","_prestigeBLUFOR","_city","_dataX","_markersX","_garrison","_arrayMrkMF","_arrayOutpostsFIA","_positionOutpost","_typeMine","_posMine","_detected","_typesX","_exists","_friendX"];
 
-_hrBackground = (server getVariable "hr") + ({(alive _x) and (not isPlayer _x) and (_x getVariable ["spawner",false]) and ((group _x in (hcAllGroups theBoss) or (isPlayer (leader _x))) and (side group _x == teamPlayer))} count allUnits);
-_resourcesBackground = server getVariable "resourcesFIA";
+private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+_hrBackground = (_economy getOrDefault ["hr", 0]) + ({(alive _x) and (not isPlayer _x) and (_x getVariable ["spawner",false]) and ((group _x in (hcAllGroups theBoss) or (isPlayer (leader _x))) and (side group _x == teamPlayer))} count allUnits);
+_resourcesBackground = _economy getOrDefault ["resources", 0];
 
 // TODO: Sort this garbage out
 {

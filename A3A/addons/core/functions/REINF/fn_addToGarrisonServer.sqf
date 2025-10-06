@@ -28,7 +28,7 @@ if (_limit != -1 and _newGarrisonCount >= _limit) then {
         deleteVehicle _x;
     } forEach _unitsToRefund;
 
-    [count _unitsToRefund,_refundMoney] remoteExec ["A3A_fnc_resourcesFIA",2];
+    [teamPlayer, count _unitsToRefund, _refundMoney] remoteExec ["A3A_fnc_resourcesFIA",2];
     [_titleStr, localize "STR_A3A_garrison_exceed_limit"] remoteExecCall ["A3A_fnc_customHint", _player];
 };
 

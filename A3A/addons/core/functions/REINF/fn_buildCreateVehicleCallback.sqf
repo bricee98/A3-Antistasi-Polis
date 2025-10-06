@@ -41,16 +41,9 @@ build_targetLocation = nil;
 
 
 if (build_cost > 0) then
-	{
-	if (!isMultiPlayer) then
-		{
-		_nul = [0, - build_cost] remoteExec ["A3A_fnc_resourcesFIA",2];
-		}
-	else
-		{
-		[-build_cost] call A3A_fnc_resourcesPlayer;
-		};
-	};
+        {
+        [teamPlayer, 0, - build_cost] remoteExec ["A3A_fnc_resourcesFIA",2];
+        };
 
 build_engineerSelected setVariable ["constructing",true];
 

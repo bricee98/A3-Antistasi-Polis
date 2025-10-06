@@ -15,11 +15,14 @@ _typeX = _this select 0;
 _costs = 2*(server getVariable FactionGet(reb,"unitExp")) + ([(FactionGet(reb,"vehiclesTruck")) # 0] call A3A_fnc_vehiclePrice);
 _hr = 2;
 if (_typeX == "delete") then
-	{
-	_costs = _costs - (server getVariable FactionGet(reb,"unitExp"));
-	_hr = 1;
-	};
-if ((server getVariable "resourcesFIA" < _costs) or (server getVariable "hr" < _hr)) exitWith {[_titleStr, format [localize "STR_A3A_fn_dialogs_minediag_no_resource",_costs,_hr]] call A3A_fnc_customHint;};
+        {
+        _costs = _costs - (server getVariable FactionGet(reb,"unitExp"));
+        _hr = 1;
+        };
+private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+private _resourcesFIA = _economy getOrDefault ["resources", 0];
+private _hrAvailable = _economy getOrDefault ["hr", 0];
+if ((_resourcesFIA < _costs) or (_hrAvailable < _hr)) exitWith {[_titleStr, format [localize "STR_A3A_fn_dialogs_minediag_no_resource",_costs,_hr]] call A3A_fnc_customHint;};
 
 if (_typeX == "delete") exitWith
 	{

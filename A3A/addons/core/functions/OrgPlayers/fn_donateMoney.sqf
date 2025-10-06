@@ -27,7 +27,7 @@ if (_resourcesPlayer < 100) exitWith {[_title, format [localize "STR_A3A_fn_orgp
 
 if (count _this == 0) exitWith
 	{
-	[0,100] remoteExec ["A3A_fnc_resourcesFIA",2];
+     [teamPlayer, 0, 100] remoteExec ["A3A_fnc_resourcesFIA",2];
 	_pointsXJ = (player getVariable "score") + 1;
 	player setVariable ["score",_pointsXJ,true];
 	[-100] call A3A_fnc_resourcesPlayer;

@@ -137,7 +137,7 @@ _task set ["s_success", {
     // TODO: Maybe both ends?
     private _distance = markerPos (_this get "_marker") distance2d (_this get "_destPos");
 	[5 + _distance/400, _this get "_marker"] remoteExecCall ["A3A_fnc_citySupportChange", 2];
-	[0, 200] remoteExec ["A3A_fnc_resourcesFIA", 2];
+    [teamPlayer, 0, 200] remoteExec ["A3A_fnc_resourcesFIA", 2];
 
 	[_this get "_taskId", "SUCCEEDED"] call BIS_fnc_taskSetState;
 	_this set ["state", "s_cleanup"]; false;
