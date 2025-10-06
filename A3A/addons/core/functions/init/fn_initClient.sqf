@@ -242,7 +242,7 @@ if !(isPlayer leader group player) then {
     [group player, player] remoteExec ["selectLeader", groupOwner group player];
 };
 
-[] remoteExecCall ["A3A_fnc_assignBossIfNone", 2];
+[false, teamPlayer] remoteExecCall ["A3A_fnc_assignBossIfNone", 2];
 
 
 if (isServer || player isEqualTo theBoss || (call BIS_fnc_admin) > 0) then {  // Local Host || Commander || Dedicated Admin
