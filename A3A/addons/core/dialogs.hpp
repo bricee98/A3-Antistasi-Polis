@@ -3048,17 +3048,27 @@ class gameMode_menu 			{
 			h = 0.0560125 * safezoneH;
 			action = "closeDialog 0;gameMode = 3;";
 		};
-		class HQ_button_offroad: A3A_core_BattleMenuRedButton
-		{
-			idc = 107;
-		 	text = $STR_antistasi_dialogs_gameMode_menu_Reb_vs_Inv;
-			x = 0.272481 * safezoneW + safezoneX;
-		 	y = 0.415981 * safezoneH + safezoneY;
-		 	w = 0.175015 * safezoneW;
-		 	h = 0.0560125 * safezoneH;
-		 	action = "closeDialog 0;gameMode = 4";
-		 };
-	};
+                class HQ_button_offroad: A3A_core_BattleMenuRedButton
+                {
+                        idc = 107;
+                        text = $STR_antistasi_dialogs_gameMode_menu_Reb_vs_Inv;
+                        x = 0.272481 * safezoneW + safezoneX;
+                        y = 0.415981 * safezoneH + safezoneY;
+                        w = 0.175015 * safezoneW;
+                        h = 0.0560125 * safezoneH;
+                        action = "closeDialog 0;gameMode = 4;";
+                 };
+                class HQ_button_civilWar: A3A_core_BattleMenuRedButton
+                {
+                        idc = 108;
+                        text = $STR_A3A_Params_gameMode_CivilWar;
+                        x = 0.37749 * safezoneW + safezoneX;
+                        y = 0.514003 * safezoneH + safezoneY;
+                        w = 0.175015 * safezoneW;
+                        h = 0.0560125 * safezoneH;
+                        action = "closeDialog 0;gameMode = 5;";
+                };
+        };
 };
 
 class RscTitles {
