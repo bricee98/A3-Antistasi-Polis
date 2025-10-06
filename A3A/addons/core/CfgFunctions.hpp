@@ -216,6 +216,11 @@ class CfgFunctions
             class processBuildingTimeouts {};
         };
 
+        class Command {
+            file = QPATHTOFOLDER(functions\Command);
+            class sideToKey {};
+        };
+
         class Collections {
             file = QPATHTOFOLDER(functions\Collections);
             class getNestedObject {};
