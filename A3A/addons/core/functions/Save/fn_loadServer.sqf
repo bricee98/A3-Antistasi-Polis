@@ -41,6 +41,158 @@ if (isServer) then {
 	["rebelLoadouts"] call A3A_fnc_getStatVariable;
 	["jna_datalist"] call A3A_fnc_getStatVariable;
 	["minorSites"] call A3A_fnc_getStatVariable;
+	// Restore command structure state and per-side economies
+	private _commandStructureBlob = "commandStructures" call A3A_fnc_returnSavedStat;
+	private _loadedStructures = createHashMap;
+	private _commandStructureData = createHashMap;
+	if (_commandStructureBlob isEqualType createHashMap) then {
+		_commandStructureData = _commandStructureBlob getOrDefault ["structures", createHashMap];
+		if !(_commandStructureData isEqualType createHashMap) then { _commandStructureData = createHashMap };
+	};
+
+	{
+		private _sideKey = _x;
+		private _savedEntry = _y;
+		if !(typeName _savedEntry == "HASHMAP") then { continue };
+
+		private _sideValue = _savedEntry getOrDefault ["side", _sideKey];
+		private _structure = [_sideValue] call A3A_fnc_defaultCommandStructure;
+		private _structureSideKey = _structure getOrDefault ["sideKey", _sideKey];
+		if !(_structureSideKey isEqualTo _sideKey) then { _structure set ["sideKey", _sideKey] };
+
+		_structure set ["hqMarker", _savedEntry getOrDefault ["hqMarker", _structure getOrDefault ["hqMarker", ""]]];
+		_structure set ["hqPosition", +(_savedEntry getOrDefault ["hqPosition", _structure getOrDefault ["hqPosition", [0,0,0]]])];
+
+		private _hqObjects = [];
+		{
+			if !(_x isEqualType "") then { continue };
+			private _obj = objectFromNetId _x;
+			if (isNull _obj) then { continue };
+			_hqObjects pushBackUnique _obj;
+		} forEach (_savedEntry getOrDefault ["hqObjects", []]);
+		_structure set ["hqObjects", _hqObjects];
+
+		private _economyData = _savedEntry getOrDefault ["economy", createHashMap];
+		private _economy = _structure getOrDefault ["economy", createHashMapFromArray [["resources", 0], ["hr", 0], ["storage", createHashMap]]];
+		if (_economyData isEqualType createHashMap) then {
+			_economy set ["resources", _economyData getOrDefault ["resources", _economy getOrDefault ["resources", 0]]];
+			_economy set ["hr", _economyData getOrDefault ["hr", _economy getOrDefault ["hr", 0]]];
+			private _storageData = _economyData getOrDefault ["storage", _economy getOrDefault ["storage", createHashMap]];
+			if (_storageData isEqualType createHashMap) then {
+				_economy set ["storage", _storageData];
+			} else {
+				_economy set ["storage", createHashMap];
+			};
+		} else {
+			if (_economyData isEqualType []) then {
+				_economy set ["resources", _economyData param [0, _economy getOrDefault ["resources", 0]]];
+				_economy set ["hr", _economyData param [1, _economy getOrDefault ["hr", 0]]];
+			} else {
+				_economy set ["resources", _economy getOrDefault ["resources", 0]];
+				_economy set ["hr", _economy getOrDefault ["hr", 0]];
+			};
+			_economy set ["storage", createHashMap];
+		};
+		_structure set ["economy", _economy];
+
+		private _unlockState = _savedEntry getOrDefault ["unlockState", _structure getOrDefault ["unlockState", createHashMap]];
+		if (_unlockState isEqualType createHashMap) then {
+			private _unlockCopy = createHashMap;
+			{ _unlockCopy set [_x, _unlockState get _x] } forEach keys _unlockState;
+			_structure set ["unlockState", _unlockCopy];
+		} else {
+			_structure set ["unlockState", createHashMap];
+		};
+
+		private _logisticsQueue = _savedEntry getOrDefault ["logisticsQueue", []];
+		if (_logisticsQueue isEqualType []) then { _structure set ["logisticsQueue", +_logisticsQueue] } else { _structure set ["logisticsQueue", _structure getOrDefault ["logisticsQueue", []]] };
+
+		private _commanderData = _savedEntry getOrDefault ["commander", createHashMap];
+		private _commanderUID = "";
+		private _commander = objNull;
+		if (_commanderData isEqualType createHashMap) then {
+			_commanderUID = _commanderData getOrDefault ["uid", ""];
+			private _commanderNetId = _commanderData getOrDefault ["netId", ""];
+			if !(_commanderNetId isEqualTo "") then { _commander = objectFromNetId _commanderNetId };
+			if (isNull _commander && !(_commanderUID isEqualTo "")) then {
+				{ if (getPlayerUID _x == _commanderUID) exitWith { _commander = _x } } forEach (allPlayers - entities "HeadlessClient_F");
+			};
+		};
+		_structure set ["commander", _commander];
+		_structure set ["commanderUID", _commanderUID];
+
+		_loadedStructures set [_sideKey, _structure];
+	} forEach _commandStructureData;
+
+	private _requiredSides = [
+		[teamPlayer, [teamPlayer] call A3A_fnc_sideToKey],
+		[Occupants, [Occupants] call A3A_fnc_sideToKey],
+		[Invaders, [Invaders] call A3A_fnc_sideToKey]
+	];
+	{
+		_x params ["_side", "_sideKey"];
+		if (_sideKey isEqualTo "") then { continue };
+		if (isNil {_loadedStructures get _sideKey}) then {
+			private _structure = [_side] call A3A_fnc_defaultCommandStructure;
+			if (_sideKey isEqualTo ([teamPlayer] call A3A_fnc_sideToKey)) then {
+				private _economy = _structure getOrDefault ["economy", createHashMap];
+				_economy set ["resources", server getVariable ["resourcesFIA", initialFactionMoney]];
+				_economy set ["hr", server getVariable ["hr", initialHr]];
+				_structure set ["economy", _economy];
+			};
+			_loadedStructures set [_sideKey, _structure];
+		};
+	} forEach _requiredSides;
+
+	missionNamespace setVariable ["A3A_commandStructures", _loadedStructures];
+	if (isMultiplayer) then { publicVariable "A3A_commandStructures" };
+
+	{
+		private _sideKey = _x;
+		private _structure = _y;
+		private _economy = _structure getOrDefault ["economy", createHashMap];
+		private _resources = _economy getOrDefault ["resources", 0];
+		private _hr = _economy getOrDefault ["hr", 0];
+		private _resVar = format ["A3A_resources_%1", _sideKey];
+		private _hrVar = format ["A3A_hr_%1", _sideKey];
+		missionNamespace setVariable [_resVar, _resources];
+		missionNamespace setVariable [_hrVar, _hr];
+		if (isMultiplayer) then { publicVariable _resVar; publicVariable _hrVar; };
+		if (_sideKey isEqualTo ([teamPlayer] call A3A_fnc_sideToKey)) then {
+			server setVariable ["resourcesFIA", _resources, true];
+			server setVariable ["hr", _hr, true];
+		};
+	} forEach _loadedStructures;
+
+	private _rebelKey = [teamPlayer] call A3A_fnc_sideToKey;
+	private _rebelStructure = _loadedStructures getOrDefault [_rebelKey, createHashMap];
+	private _savedCommander = _rebelStructure getOrDefault ["commander", objNull];
+	if (isNull _savedCommander) then {
+		private _savedUID = _rebelStructure getOrDefault ["commanderUID", ""];
+		if !(_savedUID isEqualTo "") then {
+			{ if (getPlayerUID _x == _savedUID) exitWith { _savedCommander = _x } } forEach (allPlayers - entities "HeadlessClient_F");
+		};
+	};
+
+	if (!isNull _savedCommander && {theBoss != _savedCommander}) then {
+		[_savedCommander, true] call A3A_fnc_theBossTransfer;
+	} else {
+		if (isNull theBoss) then { [] call A3A_fnc_assignBossIfNone };
+	};
+
+	private _finalCommander = theBoss;
+	if (isNull _finalCommander) then {
+		_finalCommander = _rebelStructure getOrDefault ["commander", objNull];
+	};
+	private _finalCommanderUID = "";
+	if (!isNull _finalCommander) then {
+		_finalCommanderUID = _finalCommander getVariable ["A3A_playerUID", getPlayerUID _finalCommander];
+	};
+	_rebelStructure set ["commander", _finalCommander];
+	_rebelStructure set ["commanderUID", _finalCommanderUID];
+	_loadedStructures set [_rebelKey, _rebelStructure];
+	missionNamespace setVariable ["A3A_commandStructures", _loadedStructures];
+	if (isMultiplayer) then { publicVariable "A3A_commandStructures" };
 	//===========================================================================
 
 	//RESTORE THE STATE OF THE 'UNLOCKED' VARIABLES USING JNA_DATALIST
