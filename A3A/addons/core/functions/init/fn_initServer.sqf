@@ -106,7 +106,7 @@ boxX call jn_fnc_arsenal_init;
 [A3A_saveData] call A3A_fnc_initVarServer;
 
 // Parameter-dependent vars. Could be moved to initVarServer...
-if (gameMode != 1) then {
+if (gameMode != 1 && gameMode != 5) then {
     Occupants setFriend [Invaders,1];
     Invaders setFriend [Occupants,1];
     if (gameMode == 3) then {"CSAT_carrier" setMarkerAlpha 0};
@@ -169,6 +169,10 @@ else
     posHQ = _posHQ; publicVariable "posHQ";     // hmm, remove this at some point
     petros setPos _posHQ;
     [_posHQ] call A3A_fnc_relocateHQObjects;
+};
+
+if (gameMode == 5) then {
+    [A3A_saveData, _startType] call A3A_fnc_initCivilWarMode;
 };
 
 if (_startType != "load") then {

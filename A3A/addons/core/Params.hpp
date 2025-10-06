@@ -3,8 +3,8 @@ class Params
     class gameMode
     {
         title = $STR_A3A_Params_gameMode_title;
-        values[] = {1,2,3};
-        texts[] = {$STR_A3A_Params_gameMode_RvGvI, $STR_A3A_Params_gameMode_RvGaI, $STR_A3A_Params_gameMode_RvG};
+        values[] = {1,2,3,5};
+        texts[] = {$STR_A3A_Params_gameMode_RvGvI, $STR_A3A_Params_gameMode_RvGaI, $STR_A3A_Params_gameMode_RvG, $STR_A3A_Params_gameMode_CivilWar};
         default = 1;
     };
     class autoSave
