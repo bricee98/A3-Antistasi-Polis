@@ -218,7 +218,14 @@ class CfgFunctions
 
         class Command {
             file = QPATHTOFOLDER(functions\Command);
+            class defaultCommandStructure {};
+            class getCommandStructureForSide {};
+            class getCommanderForSide {};
+            class getEconomyForSide {};
+            class setCommandStructureForSide {};
+            class setCommanderForSide {};
             class sideToKey {};
+            class updateEconomyForSide {};
         };
 
         class Collections {
@@ -381,6 +388,7 @@ class CfgFunctions
             //Main initialisation functions.
             class initServer {};
             class initClient {};
+            class initCivilWarMode {};
             class setupMonitor {};
             class startGame {};
 

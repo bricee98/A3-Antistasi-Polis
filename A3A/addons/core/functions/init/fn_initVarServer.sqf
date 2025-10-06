@@ -55,6 +55,17 @@ DECLARE_SERVER_VAR(A3A_activePlayerCount, 0);
 //Legacy tool for scaling AI difficulty. Should die.
 DECLARE_SERVER_VAR(difficultyCoef, 0);
 
+// Side-aware command structures used by multiplayer commander logic
+private _commandStructures = createHashMap;
+private _rebelStructure = [teamPlayer] call A3A_fnc_defaultCommandStructure;
+private _rebelEconomy = _rebelStructure getOrDefault ["economy", createHashMapFromArray [["resources", 0], ["hr", 0], ["storage", createHashMap]]];
+_rebelEconomy set ["resources", initialFactionMoney];
+_rebelEconomy set ["hr", initialHr];
+_rebelStructure set ["economy", _rebelEconomy];
+_commandStructures set [[teamPlayer] call A3A_fnc_sideToKey, _rebelStructure];
+DECLARE_SERVER_VAR(A3A_commandStructures, _commandStructures);
+DECLARE_SERVER_VAR(A3A_civilWarMode, false);
+
 //Mostly state variables, used by various parts of Antistasi.
 DECLARE_SERVER_VAR(bigAttackInProgress, false);
 DECLARE_SERVER_VAR(AAFpatrols,0);
