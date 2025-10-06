@@ -12,18 +12,8 @@ if (_typeVehX == "") exitWith {[_titleStr, localize "STR_A3A_fn_reinf_addFIAVeh_
 
 private _cost = [_typeVehX] call A3A_fnc_vehiclePrice;
 
-private _resourcesFIA = 0;
-if (!isMultiPlayer) then {_resourcesFIA = server getVariable "resourcesFIA"} else
-	{
-	if (player != theBoss) then
-		{
-		_resourcesFIA = player getVariable "moneyX";
-		}
-	else
-		{
-		_resourcesFIA = server getVariable "resourcesFIA";
-		};
-	};
+private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+private _resourcesFIA = _economy getOrDefault ["resources", 0];
 
 if (_resourcesFIA < _cost) exitWith {[_titleStr, format [localize "STR_A3A_fn_reinf_addFIAVeh_no_money",_cost]] call A3A_fnc_customHint;};
 private _nearestMarker = [markersX select {sidesX getVariable [_x,sideUnknown] == teamPlayer},player] call BIS_fnc_nearestPosition;
@@ -34,12 +24,10 @@ private _extraMessage =	format ["Buying vehicle for $%1.", _cost];
 private _fnc_placed = {
 	params ["_vehicle", "_cost"];
 	if (isNull _vehicle) exitWith {};
-	if (player == theBoss) then {
-		[0,(-1 * _cost)] remoteExec ["A3A_fnc_resourcesFIA",2];
-	} else {
-		[-1 * _cost] call A3A_fnc_resourcesPlayer;
-		_vehicle setVariable ["ownerX",getPlayerUID player,true];
-	};
+        [teamPlayer, 0, -_cost] remoteExec ["A3A_fnc_resourcesFIA",2];
+        if (player != theBoss) then {
+                _vehicle setVariable ["ownerX",getPlayerUID player,true];
+        };
 	_vehicle setFuel random [0.10, 0.175, 0.25];
 	[_vehicle, teamPlayer] call A3A_fnc_AIVehInit;
 	["", _vehicle] remoteExecCall ["A3A_fnc_garrisonServer_addVehicle", 2];

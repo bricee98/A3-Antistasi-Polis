@@ -61,7 +61,7 @@ sleep 100;
 if (alive _unit && {!(_unit getVariable ["incapacitated", false])}) then
 {
 	([_sideX] + _modAggro) remoteExec ["A3A_fnc_addAggression",2];
-	if (_modHR) then { [1,0] remoteExec ["A3A_fnc_resourcesFIA",2] };
+        if (_modHR) then { [_fleeSide, 1, 0] remoteExec ["A3A_fnc_resourcesFIA",2] };
 };
 
 // If they escaped or were downed then record in the garrison. Deaths should already be recorded

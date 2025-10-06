@@ -128,7 +128,7 @@ if (_timeout && alive _box) then {
 	deleteVehicle _box;
 } else {
 	[_taskId, "LOG", "SUCCEEDED"] call A3A_fnc_taskSetState;
-	[0,300*_bonus] remoteExec ["A3A_fnc_resourcesFIA",2];
+    [teamPlayer, 0, 300*_bonus] remoteExec ["A3A_fnc_resourcesFIA",2];
 	{if (_x distance _box < 500) then {[10*_bonus,_x] call A3A_fnc_playerScoreAdd}} forEach (allPlayers - (entities "HeadlessClient_F"));
 	[5*_bonus,theBoss] call A3A_fnc_playerScoreAdd;
     Info("Mission Succeeded");

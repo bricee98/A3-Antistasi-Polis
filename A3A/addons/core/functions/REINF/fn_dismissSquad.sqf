@@ -79,4 +79,4 @@ private _assignedVehicles =	[];
 	deleteVehicle _veh;
 } forEach _assignedVehicles;
 
-_nul = [_hr,_resourcesFIA] remoteExec ["A3A_fnc_resourcesFIA",2];
+[teamPlayer, _hr, _resourcesFIA] remoteExec ["A3A_fnc_resourcesFIA",2];

@@ -33,7 +33,7 @@ private _fnc_placed = {
     };
 
     if (_price > 0) then {
-        if (_unit == theBoss) exitWith { [0, -_price] remoteExec ["A3A_fnc_resourcesFIA", 2] };
+        if (_unit == theBoss) exitWith { [teamPlayer, 0, -_price] remoteExec ["A3A_fnc_resourcesFIA", 2] };
         [-_price] call A3A_fnc_resourcesPlayer;     // uh, we're just assuming _unit == player here
     };
 

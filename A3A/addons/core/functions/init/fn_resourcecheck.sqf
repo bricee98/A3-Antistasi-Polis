@@ -46,8 +46,7 @@ while {true} do
 
 	Debug_2("Occupant radio keys: %1 - Invader radio keys: %2", occRadioKeys, invRadioKeys);
 
-	server setVariable ["hr", _hrAdd + (server getVariable "hr"), true];
-	server setVariable ["resourcesFIA", ceil _resAdd + (server getVariable "resourcesFIA"), true];
+        [teamPlayer, ceil _resAdd, _hrAdd] call A3A_fnc_updateEconomyForSide;
 
 	private _newBombRuns = bombRuns + 0.25 * ({sidesX getVariable [_x,sideUnknown] == teamPlayer} count airportsX);
 	bombRuns = _newBombRuns min (4 + tierWar*2);

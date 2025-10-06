@@ -180,7 +180,7 @@ if (_destinationX == boxX) then
     private _arsenalText = "";
     if (_refund > 0) then
     {
-        [0,_refund, true] spawn A3A_fnc_resourcesFIA; 
+        [teamPlayer, 0, _refund, true] spawn A3A_fnc_resourcesFIA;
         _moneyText = format ["<t size='0.6' color='#C1C0BB'>" + localize "STR_A3A_fn_base_resourcesFIA_resources" + "<br/><br/></t>", FactionGet(reb,"name")]; 
         _moneyText = _moneyText + format ["<t size='0.5' color='#C1C0BB'>" + localize "STR_A3A_fn_base_resourcesFIA_money" + "</t><br/><br/><br/>","+", _refund];
     };

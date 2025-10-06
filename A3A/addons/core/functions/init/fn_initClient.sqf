@@ -197,7 +197,7 @@ player addEventHandler ["GetOutMan", {
 }];
 
 player addEventHandler ["Killed", {
-    [-1, 0] remoteExecCall ["A3A_fnc_resourcesFIA", 2];
+    [teamPlayer, -1, 0] remoteExecCall ["A3A_fnc_resourcesFIA", 2];
 }];
 
 // Prevent players getting shot by their own AIs. EH is respawn-persistent

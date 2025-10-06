@@ -10,12 +10,7 @@ private _unit = [group player, _typeUnit, position player, [], 0, "NONE"] call A
 
 private _costs = server getVariable _typeUnit;
 
-if (player == theBoss) then {
-	[-1, -_costs] remoteExec ["A3A_fnc_resourcesFIA",2];
-} else {
-	[-1, 0] remoteExec ["A3A_fnc_resourcesFIA",2];
-	[- _costs] call A3A_fnc_resourcesPlayer;
-};
+[teamPlayer, -1, -_costs] remoteExec ["A3A_fnc_resourcesFIA",2];
 [_titleStr, localize "STR_A3A_fn_reinf_reinfPlayer_recruited"] call A3A_fnc_customHint;
 
 [_unit] spawn A3A_fnc_FIAinit;

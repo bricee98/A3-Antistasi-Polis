@@ -40,7 +40,7 @@ if (_troops find _unitType == -1) exitWith {
 };
 
 // ugh
-[1, (server getVariable [_unitType, 0]) / 2] spawn A3A_fnc_resourcesFIA;
+[teamPlayer, 1, (server getVariable [_unitType, 0]) / 2] spawn A3A_fnc_resourcesFIA;
 
 // Remove unit from server garrison data
 _troops deleteAt (_troops find _unitType);

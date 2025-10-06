@@ -28,7 +28,7 @@ if((player == theBoss && server getVariable ["resourcesFIA", 0] < _totalCost)) e
     [localize "STR_A3A_Utility_Items_Purchase_Title", localize "STR_A3A_Utility_Items_Insufficient_Funds"] call A3A_fnc_customHint;
 };
 
-if (player == theBoss) then { [0, -_totalCost] remoteExec ["A3A_fnc_resourcesFIA", 2] };
+if (player == theBoss) then { [teamPlayer, 0, -_totalCost] remoteExec ["A3A_fnc_resourcesFIA", 2] };
 private _shoppingCartList = [];
 {
 	private _key = _x;

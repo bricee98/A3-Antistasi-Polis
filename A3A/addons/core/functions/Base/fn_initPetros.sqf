@@ -45,9 +45,10 @@ petros addMPEventHandler ["mpkilled",
     if ((side _killer == Invaders) or (side _killer == Occupants) or petros getVariable ["A3A_napalmHit", false]) then
     {
         garrison setVariable ["Synd_HQ", [], true];
-        _hr = server getVariable "hr";
-        _res = server getVariable "resourcesFIA";
-        [-1*(round(_hr*0.9)), -1*(round(_res*0.9))] spawn A3A_fnc_resourcesFIA;
+        private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+        _hr = _economy getOrDefault ["hr", 0];
+        _res = _economy getOrDefault ["resources", 0];
+        [teamPlayer, -1*(round(_hr*0.9)), -1*(round(_res*0.9))] spawn A3A_fnc_resourcesFIA;
         A3A_petrosMoving = false; publicVariable "A3A_petrosMoving";
         [] spawn A3A_fnc_petrosDeathMonitor;
     }

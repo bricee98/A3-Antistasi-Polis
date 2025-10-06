@@ -7,6 +7,10 @@ private _countInvaders = 0;
 private _countOccupants = 0;
 private _countCiv = 0;
 
+private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+private _resourcesValue = _economy getOrDefault ["resources", 0];
+private _hrValue = _economy getOrDefault ["hr", 0];
+
 {
 	_countGroups = _countGroups + 1;
 	switch(side _x) do {
@@ -46,8 +50,8 @@ private _performanceLog = format [
 	,count entities ""
 	,{!isPlayer _x && !isNull (_x findNearestEnemy _x)} count allUnits
 	,{behaviour leader _x == "COMBAT"} count allGroups
-	,(server getVariable "resourcesFIA") toFixed 0
-	,(server getVariable "hr") toFixed 0
+        ,_resourcesValue toFixed 0
+        ,_hrValue toFixed 0
     ,aggressionOccupants
     ,aggressionInvaders
     ,tierWar

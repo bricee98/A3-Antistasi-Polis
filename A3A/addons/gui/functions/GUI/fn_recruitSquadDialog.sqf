@@ -178,8 +178,9 @@ switch (_mode) do
         _aaTruckPriceText ctrlSetText (format ["%1 € %2 HR", _aaTruckMoney, _aaTruckHr]);
 
         // Disable buttons and darken icon if not enough money or HR for the squad
-        private _money = server getVariable "resourcesFIA";
-        private _hr = server getVariable "hr";
+        private _economy = [teamPlayer, true] call A3A_fnc_getEconomyForSide;
+        private _money = _economy getOrDefault ["resources", 0];
+        private _hr = _economy getOrDefault ["hr", 0];
         if (_money < _infSquadMoney || _hr < _infSquadHr) then {
             _infSquadButton ctrlEnable false;
             _infSquadButton ctrlSetTooltip localize "STR_antistasi_recruit_squad_error";
