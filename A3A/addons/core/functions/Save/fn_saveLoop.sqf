@@ -60,6 +60,87 @@ private _destroyedPositions = destroyedBuildings apply { getPosATL _x };
 ["radioKeys", [occRadioKeys,invRadioKeys]] call A3A_fnc_setStatVariable;
 ["HQKnowledge", [A3A_curHQInfoOcc, A3A_curHQInfoInv, A3A_oldHQInfoOcc, A3A_oldHQInfoInv]] call A3A_fnc_setStatVariable;
 
+// Persist command structure state for each faction
+private _commandStructures = missionNamespace getVariable ["A3A_commandStructures", createHashMap];
+private _savedCommandStructures = createHashMap;
+{
+	private _sideKey = _x;
+	private _structure = _y;
+	if !(typeName _structure == "HASHMAP") then { continue };
+
+	private _savedEntry = createHashMap;
+	private _structureSide = _structure getOrDefault ["side", _sideKey];
+	private _structureSideKey = [_structureSide] call A3A_fnc_sideToKey;
+	if (_structureSideKey isEqualTo "") then {
+		if (_structureSide isEqualType "") then { _structureSideKey = toLower _structureSide } else { _structureSideKey = _structure getOrDefault ["sideKey", _sideKey] };
+	};
+	_savedEntry set ["sideKey", _structure getOrDefault ["sideKey", _sideKey]];
+	_savedEntry set ["side", _structureSideKey];
+
+	private _commander = _structure getOrDefault ["commander", objNull];
+	private _commanderData = createHashMap;
+	if (!isNull _commander) then {
+		private _commanderUID = _commander getVariable ["A3A_playerUID", getPlayerUID _commander];
+		private _commanderNetId = netId _commander;
+		if !(_commanderUID isEqualTo "") then { _commanderData set ["uid", _commanderUID] };
+		if !(_commanderNetId isEqualTo "") then { _commanderData set ["netId", _commanderNetId] };
+	};
+	_savedEntry set ["commander", _commanderData];
+
+	private _hqMarker = _structure getOrDefault ["hqMarker", ""];
+	private _hqPosition = _structure getOrDefault ["hqPosition", [0,0,0]];
+	private _hqObjects = _structure getOrDefault ["hqObjects", []];
+	private _hqObjectNetIds = [];
+	{
+		if (isNull _x) then { continue };
+		private _netId = netId _x;
+		if (_netId isEqualTo "") then { continue };
+		_hqObjectNetIds pushBackUnique _netId;
+	} forEach _hqObjects;
+	_savedEntry set ["hqMarker", _hqMarker];
+	_savedEntry set ["hqPosition", +_hqPosition];
+	_savedEntry set ["hqObjects", _hqObjectNetIds];
+
+	private _economy = _structure getOrDefault ["economy", createHashMap];
+	private _savedEconomy = createHashMap;
+	_savedEconomy set ["resources", _economy getOrDefault ["resources", 0]];
+	_savedEconomy set ["hr", _economy getOrDefault ["hr", 0]];
+	private _storage = _economy getOrDefault ["storage", createHashMap];
+	if (_storage isEqualType createHashMap) then {
+		private _storageCopy = createHashMap;
+		{ _storageCopy set [_x, _storage get _x] } forEach keys _storage;
+		_savedEconomy set ["storage", _storageCopy];
+	} else {
+		_savedEconomy set ["storage", _storage];
+	};
+	_savedEntry set ["economy", _savedEconomy];
+
+	private _unlockState = _structure getOrDefault ["unlockState", createHashMap];
+	if (_unlockState isEqualType createHashMap) then {
+		private _unlockCopy = createHashMap;
+		{ _unlockCopy set [_x, _unlockState get _x] } forEach keys _unlockState;
+		_savedEntry set ["unlockState", _unlockCopy];
+	} else {
+		_savedEntry set ["unlockState", _unlockState];
+	};
+
+	private _logisticsQueue = _structure getOrDefault ["logisticsQueue", []];
+	if (_logisticsQueue isEqualType []) then {
+		_savedEntry set ["logisticsQueue", +_logisticsQueue];
+	} else {
+		_savedEntry set ["logisticsQueue", _logisticsQueue];
+	};
+
+	_savedCommandStructures set [_sideKey, _savedEntry];
+} forEach _commandStructures;
+
+private _commandStructureBlob = createHashMapFromArray [
+	["version", 1],
+	["structures", _savedCommandStructures]
+];
+["commandStructures", _commandStructureBlob] call A3A_fnc_setStatVariable;
+
+
 // Convert side values because JSON doesn't support them
 private _modifiedSites = createHashMap;
 private _sideToStr = createHashMapFromArray [[teamPlayer,0], [Occupants,1],	[Invaders,2]];
