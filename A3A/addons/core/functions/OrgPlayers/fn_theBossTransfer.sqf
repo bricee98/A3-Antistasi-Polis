@@ -17,6 +17,8 @@ if (!isNull theBoss) then
 theBoss = _newBoss;
 publicVariable "theBoss";
 
+[teamPlayer, _newBoss, true] call A3A_fnc_setCommanderForSide;
+
 if (isNull _newBoss) exitWith {
 	[_silent] spawn {
 		params ["_silent"];
